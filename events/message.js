@@ -5,8 +5,12 @@ module.exports = (client, message) => {
   // Only process messages that start with our prefix
   if (message.content.indexOf(process.env.PREFIX) !== 0) return;
   
-  const args = message.content.slice(process.env.PREFIX.length).trim().split('/ +/g');
+  const args = message.content.slice(process.env.PREFIX.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
   
+  const cmd = client.commands.get(command);
   
+  if (!cmd) return;
+  
+  cmd.run(client, message, args);
 };
