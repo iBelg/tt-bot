@@ -14,7 +14,7 @@ exports.run = (client, message, args) => {
         let foundCommand = client.commands.get(commandName);
 
         if (!foundCommand) {
-            message.channel.send(`No \`${commandName}\` found.`);
+            message.channel.send(`No \`${commandName}\` command found.`);
             return;
         }
 
