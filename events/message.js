@@ -3,9 +3,9 @@ module.exports = (client, message) => {
   if (message.author.bot) return;
   
   // Only process messages that start with our prefix
-  if (message.content.indexOf(process.env.PREFIX) !== 0) return;
+  if (message.content.indexOf(client.config.prefix) !== 0) return;
   
-  const args = message.content.slice(process.env.PREFIX.length).trim().split(/ +/g);
+  const args = message.content.slice(client.config.prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
   
   const cmd = client.commands.get(command);
