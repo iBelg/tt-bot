@@ -21,9 +21,10 @@ exports.run = (client, message, args) => {
        embed.setTitle(`Usage of ${commandName}`)
            .setDescription(foundCommand.hasOwnProperty('usage') ? foundCommand.usage(client) : 'No usage defined!');
     } else {
+        const allCommands = client.commands.keyArray().reduce((accumulator, currentValue) => `${accumulator}\n${client.config.prefix}${currentValue}`, '');
         embed.setTitle(`Commands`)
             .setColor('#2eaf28')
-            .setDescription(client.commands.keyArray().reduce((accumulator, currentValue) => `${accumulator}\n${client.config.prefix}${currentValue}`, ''));
+            .setDescription(`Use ${client.config.prefix}help <command> to get more info about that command usage.\n\n${allCommands}`);
     }
     message.channel.send(embed);
 };
