@@ -1,10 +1,7 @@
 {
-  "//1": "describes your app and its dependencies",
-  "//2": "https://docs.npmjs.com/files/package.json",
-  "//3": "updating this file will download and update your packages",
-  "name": "hello-express",
-  "version": "0.0.1",
-  "description": "A simple Node app built on Express, instantly up and running.",
+  "name": "tt-bot",
+  "version": "0.0.2",
+  "description": "A discord bot made for The Tower.",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
@@ -20,12 +17,11 @@
     "node": "8.x"
   },
   "repository": {
-    "url": "https://glitch.com/edit/#!/hello-express"
+    "url": "https://github.com/iBelg/tt-bot"
   },
   "license": "MIT",
   "keywords": [
     "node",
-    "glitch",
-    "express"
+    "discord"
   ]
 }

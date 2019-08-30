@@ -1,22 +1,31 @@
 module.exports = () => {
   const Discord = require('discord.js');
+  const Enmap = require('enmap');
+  const fs = require('fs');
+  
   const client = new Discord.Client();
+  client.commands = new Enmap();
 
-  client.on('ready', () => {
-    console.log('I am ready');
+  fs.readdir('./events/', (err, files) => {
+    if (err) return console.error(err);
+    files.forEach((file) => {
+      const event = require(`./events/${file}`);
+      const eventName = file.split('.')[0];
+      client.on(eventName, event.bind(null, client));
+    });
   });
-
-  client.on('message', (message) => {
-    if (message.content.indexOf(process.env.PREFIX) !== 0) return;
-
-    if (message.content.startsWith(`${process.env.PREFIX}event`)) {   
-      let splitted = message.content.split(' ');
-      delete splitted[0];
-
-      
-    }
-  });
-
+  
+  fs.readdir('./commands/', (err, files) => {
+    if (err) return console.error(err);
+    files.forEach(file => {
+      if (!file.endsWith('.js')) return;
+      const props = require(`./commands/${file}`);
+      const commandName = file.split('.')[0];
+      console.log(`Attempting to load command: ${commandName}`);
+      client.commands.set(commandName, props);
+    });
+  })
+  
   client.login(process.env.TOKEN);
 };
 

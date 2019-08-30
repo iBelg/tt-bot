@@ -1,7 +1,7 @@
 const http = require('http');
 const express = require('express');
 const app = express();
-const bot = require('./botv2.js');
+const bot = require('./bot.js');
 app.get("/", (request, response) => {
   console.log(Date.now() + " Ping Received");
   response.sendStatus(200);
