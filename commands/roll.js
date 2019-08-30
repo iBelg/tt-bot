@@ -23,5 +23,5 @@ exports.run = (client, message, args) => {
         return;
     }
 
-    message.channel.send(`${message.author.username} rolled a ${result} (${minRoll} - ${maxRoll}).`);
+    message.channel.send(`${message.author.toString()} rolled a ${result} (${minRoll} - ${maxRoll}).`);
 };
