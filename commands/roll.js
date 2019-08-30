@@ -1,5 +1,13 @@
 const utils = require('../utils.js');
 
+exports.usage = (client) => {
+    return `
+    ${client.config.prefix}roll
+    ${client.config.prefix}roll <max>
+    ${client.config.prefix}roll <min> <max>
+    `;
+};
+
 exports.run = (client, message, args) => {
     let minRoll = 0;
     let maxRoll = 100;

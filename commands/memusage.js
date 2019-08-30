@@ -1,5 +1,9 @@
 const os = require('os');
 
+exports.usage = (client) => {
+    return `${client.config.prefix}memusage`;
+};
+
 exports.run = (client, message, args) => {
     const freeMemory = os.freemem();
     const totalMemory = os.totalmem();
