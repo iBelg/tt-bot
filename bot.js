@@ -1,22 +1,37 @@
 module.exports = () => {
-  const Discord = require('discord.js');
-  const client = new Discord.Client();
+    const Discord = require('discord.js');
+    const Enmap = require('enmap');
+    const fs = require('fs');
 
-  client.on('ready', () => {
-    console.log('I am ready');
-  });
+    const config = require('./config.js');
+    const client = new Discord.Client();
+    client.commands = new Enmap();
+    client.config = config();
+    console.log(config());
 
-  client.on('message', (message) => {
-    if (message.content.indexOf(process.env.PREFIX) !== 0) return;
+    fs.readdir('./events/', (err, files) => {
+        if (err) return console.error(err);
+        files.forEach((file) => {
+            const event = require(`./events/${file}`);
+            const eventName = file.split('.')[0];
+            client.on(eventName, event.bind(null, client));
+        });
+    });
 
-    if (message.content.startsWith(`${process.env.PREFIX}event`)) {   
-      let splitted = message.content.split(' ');
-      delete splitted[0];
+    fs.readdir('./commands/', (err, files) => {
+        if (err) return console.error(err);
+        files.forEach(file => {
+            if (!file.endsWith('.js')) return;
+            const props = require(`./commands/${file}`);
+            const commandName = file.split('.')[0];
+            console.log(`Attempting to load command: ${commandName}`);
+            client.commands.set(commandName, props);
+        });
+    })
 
-      
-    }
-  });
-
-  client.login(process.env.TOKEN);
+    console.log('Attempting login with token:', client.config.token);
+    client.login(client.config.token).then((result) => {
+        console.log('Bot has logged in.');
+    });
 };
 
