@@ -12,8 +12,12 @@ exports.run = (client, message, args) => {
     if (args.length >= 1) {
         let commandName = args[0];
         let foundCommand = client.commands.get(commandName);
-
-        if (!foundCommand) {
+        
+        if (commandName === 'banaan') {
+            message.channel.send(`Ulle ma is een \`${commandName}\`.`);
+            return;
+        }
+        else if (!foundCommand) {
             message.channel.send(`No \`${commandName}\` command found.`);
             return;
         }
