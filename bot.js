@@ -44,8 +44,16 @@ module.exports = () => {
             if (command.hasOwnProperty('setup')) {
                 command.setup(client);
             }
+            if (command.hasOwnProperty('aliases')) {
+                const listAliases = command.aliases;
+                for (const alias of listAliases) {
+                    if (!client.commands.has(alias)) {
+                        client.commands.set(alias, command);
+                    }
+                }
+            }
         });
-    })
+    });
 
     console.log('Attempting login with token:', client.config.token);
     client.login(client.config.token).then((result) => {

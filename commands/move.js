@@ -1,3 +1,5 @@
+exports.aliases = ['kidnap', 'blackhole'];
+
 exports.usage = (client) => {
     return `
     ${client.config.prefix}move <user mention>

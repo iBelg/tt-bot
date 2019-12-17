@@ -24,6 +24,9 @@ exports.run = (client, message, args) => {
 
        embed.setTitle(`Usage of ${commandName}`)
            .setDescription(foundCommand.hasOwnProperty('usage') ? foundCommand.usage(client) : 'No usage defined!');
+        if (foundCommand.aliases) {
+            embed.addField('Aliases', foundCommand.aliases.toString());
+        }
     } else {
         const allCommands = client.commands.keyArray().reduce((accumulator, currentValue) => `${accumulator}\n${client.config.prefix}${currentValue}`, '');
         embed.setTitle(`Commands`)
