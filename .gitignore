@@ -1,7 +1,4 @@
 .env
 .idea/
 node_modules/
-watch.json
-shrinkwrap.yaml
-.trigger-rebuild
 
