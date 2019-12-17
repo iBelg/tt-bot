@@ -20,7 +20,7 @@ exports.setup = (client) => {
             if (titleRegex.test(embed.title) && data.emoji.name && data.emoji.name === utils.informationIcon()) {
                 (async () => {
                     const reactionTallyEmbed = new Discord.RichEmbed()
-                        .setTitle(`A tally of all the reactions`)
+                        .setTitle(`A tally of all the reactions (requested by ${data.member.user.username})`)
                         .setColor(0xFF0000)
                         .setDescription(embed.description)
                         .addBlankField();
@@ -79,8 +79,8 @@ exports.run = (client, message, args) => {
       `);
     message.channel.send(embed)
         .then(async (message) => {
-            await asyncForEach(options, async (option, index) => {
-                await message.react(possibleReactions[index]);
+            await asyncForEach(options, (option, index) => {
+                message.react(possibleReactions[index]);
             });
             await message.react(utils.informationIcon());
         });
