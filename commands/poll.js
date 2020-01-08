@@ -79,8 +79,8 @@ exports.run = (client, message, args) => {
       `);
     message.channel.send(embed)
         .then(async (message) => {
-            await asyncForEach(options, (option, index) => {
-                message.react(possibleReactions[index]);
+            await asyncForEach(options, async (option, index) => {
+                await message.react(possibleReactions[index]);
             });
             await message.react(utils.informationIcon());
         });
