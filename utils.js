@@ -23,5 +23,17 @@ module.exports = {
     getAllReactionsFromMessageByMe: (message) => {
         const reactions = message.reactions.array();
         return reactions.filter((reaction) => reaction.me);
+    },
+    getServerChangesChannel: (guild, client) => {
+        const cache = client.cache.getCache(guild);
+        const channels = guild.channels.array();
+        const serverChangesChannelName = client.config.serverChangesChannel;
+        if (!cache.getItem('serverChangesChannel')) {
+            const serverChangesChannel = channels.find((channel) => channel.name === serverChangesChannelName);
+            if (serverChangesChannel) {
+                cache.setItem('serverChangesChannel', serverChangesChannel);
+            }
+        }
+        return cache.getItem('serverChangesChannel');
     }
 };

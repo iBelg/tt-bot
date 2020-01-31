@@ -1,4 +1,6 @@
-module.exports = (client, oldUser, newUser) => { 
+const utils = require('../utils.js');
+
+module.exports = (client, oldUser, newUser) => {
   const userGuild = newUser.guild;
   const serverChangesChannel = getServerChangesChannel(userGuild, client);
   const oldChannelName = oldUser.voiceChannel ? oldUser.voiceChannel.name : undefined;
@@ -19,10 +21,7 @@ module.exports = (client, oldUser, newUser) => {
 };
 
 function getServerChangesChannel(guild, client) {
-  const channels = guild.channels.array();
-  const serverChangesChannelName = client.config.serverChangesChannel;
-  const serverChangesChannel = channels.find((channel) => channel.name === serverChangesChannelName);
-  return serverChangesChannel || createServerChangesChannel(guild, client);
+  return utils.getServerChangesChannel(guild, client) || createServerChangesChannel(guild, client);
 }
 
 function createServerChangesChannel(guild, client) {

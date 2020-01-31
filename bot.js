@@ -7,11 +7,13 @@ module.exports = () => {
     const fs = require('fs');
 
     const config = require('./config.js');
+    const cache = require('./cache.js');
     const client = new Discord.Client();
     client.commands = new Enmap();
     client.rawEvents = new Enmap();
     client.eventEmitter = new events.EventEmitter();
     client.config = config();
+    client.cache = cache();
     console.log(config());
 
     fs.readdir('./events/', (err, files) => {
