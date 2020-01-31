@@ -16,5 +16,6 @@ exports.run = (client, message, args) => {
         foundChannels[i].delete();
         deletedCount++;
     }
-    message.channel.send(`I deleted ${deletedCount} channels.`);
+    client.cache.getCache(currentGuild).clear();
+    message.channel.send(`I deleted ${deletedCount} channels and the cache has been cleared.`);
 };
