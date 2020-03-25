@@ -29,6 +29,7 @@ exports.usage = (client) => {
 
 exports.run = (client, message, args) => {
     if (busy) {
+        message.channel.send('I am currently busying. Try again in a sec.');
         return;
     } else {
         busy = true;
