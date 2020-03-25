@@ -50,13 +50,13 @@ exports.run = (client, message, args) => {
             .then(connection => {
                 if (currentTimeout) clearTimeout(currentTimeout);
                 currentTimeout = setTimeout(() => {
-                    finish();
+                    finish(connection);
                 }, 15000);
                 try {
                     const path = `./sounds/${filename}`;
                     const dispatcher = connection.playFile(path);
                     dispatcher.on('end', () => {
-                        finish();
+                        finish(connection);
                     });
                 } catch (e) {
                     console.error(e);
