@@ -4,6 +4,7 @@ const Enmap = require('enmap');
 
 let soundMappings;
 let currentTimeout;
+let busy = false;
 
 exports.setup = (client) => {
     fs.readdir('./sounds/', (err, files) => {
@@ -27,6 +28,7 @@ exports.usage = (client) => {
 };
 
 exports.run = (client, message, args) => {
+    if (busy) return;
     const authorUser = message.author;
     const authorMember = message.guild.member(authorUser);
     const toVoiceChannel = authorMember.voiceChannel;
@@ -34,7 +36,7 @@ exports.run = (client, message, args) => {
 
     if (soundname === 'list') {
         let result = '';
-        soundMappings.array().forEach(item => result += `${item}\n`);
+        soundMappings.keyArray().forEach(item => result += `${item}\n`);
         message.channel.send(result);
         return;
     }
@@ -48,25 +50,13 @@ exports.run = (client, message, args) => {
             .then(connection => {
                 if (currentTimeout) clearTimeout(currentTimeout);
                 currentTimeout = setTimeout(() => {
-                    if (connection.status !== 4) {
-                        connection.disconnect();
-                    }
-                    clearTimeout(currentTimeout);
-                    currentTimeout = undefined;
+                    finish();
                 }, 15000);
                 try {
                     const path = `./sounds/${filename}`;
-                    if (fs.existsSync(path)) {
-                        console.log('File has been found!');
-                    } else {
-                        console.log('File has not been found!!!');
-                    }
-                    console.log('Playing file!');
                     const dispatcher = connection.playFile(path);
                     dispatcher.on('end', () => {
-                        console.log('Playing file ended!');
-                        connection.disconnect();
-                        clearTimeout(currentTimeout);
+                        finish();
                     });
                 } catch (e) {
                     console.error(e);
@@ -79,4 +69,13 @@ exports.run = (client, message, args) => {
     }
 };
 
+
+function finish(connection) {
+    if (connection.status !== 4) {
+        connection.disconnect();
+    }
+    clearTimeout(currentTimeout);
+    currentTimeout = undefined;
+    busy = false;
+}
 
