@@ -28,12 +28,7 @@ exports.usage = (client) => {
 };
 
 exports.run = (client, message, args) => {
-    if (busy) {
-        message.channel.send('I am currently busy. Try again in a sec.');
-        return;
-    } else {
-        busy = true;
-    }
+
     const authorUser = message.author;
     const authorMember = message.guild.member(authorUser);
     const toVoiceChannel = authorMember.voiceChannel;
@@ -44,6 +39,16 @@ exports.run = (client, message, args) => {
         soundMappings.keyArray().forEach(item => result += `${item}\n`);
         message.channel.send(result);
         return;
+    } else if (soundname === 'stop') {
+        toVoiceChannel.leave();
+        return;
+    }
+
+    if (busy) {
+        message.channel.send('I am currently busy. Try again in a sec.');
+        return;
+    } else {
+        busy = true;
     }
 
     let filename;
