@@ -76,7 +76,7 @@ exports.run = (client, message, args) => {
                 }
             }).catch(err => {
             console.log(err);
-            toVoiceChannel.leave()
+            toVoiceChannel.leave();
             busy = false;
         });
     }
@@ -84,11 +84,14 @@ exports.run = (client, message, args) => {
 
 
 function finish(connection) {
-    if (connection.status !== 4) {
-        connection.disconnect();
-    }
-    clearTimeout(currentTimeout);
-    currentTimeout = undefined;
-    busy = false;
+    const tempTimeout = setTimeout(() => {
+        if (connection.status !== 4) {
+            connection.disconnect();
+        }
+        clearTimeout(currentTimeout);
+        currentTimeout = undefined;
+        busy = false;
+        clearTimeout(tempTimeout);
+    }, 2000);
 }
 
