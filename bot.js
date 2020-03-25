@@ -46,7 +46,7 @@ module.exports = () => {
             if (command.hasOwnProperty('setup')) {
                 command.setup(client);
             }
-            if (command.hasOwnProperty('aliases')) {
+            if (command.hasOwnProperty('aliases') && command.aliases) {
                 const listAliases = command.aliases;
                 for (const alias of listAliases) {
                     if (!client.commands.has(alias)) {
