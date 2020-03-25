@@ -36,7 +36,7 @@ exports.run = (client, message, args) => {
 
     if (soundname === 'list') {
         let result = '';
-        soundMappings.keyArray().forEach(item => result += `${item}\n`);
+        soundMappings.keyArray().forEach(item => result += `${item}, `);
         message.channel.send(result);
         return;
     } else if (soundname === 'stop') {
