@@ -28,7 +28,11 @@ exports.usage = (client) => {
 };
 
 exports.run = (client, message, args) => {
-    if (busy) return;
+    if (busy) {
+        return;
+    } else {
+        busy = true;
+    }
     const authorUser = message.author;
     const authorMember = message.guild.member(authorUser);
     const toVoiceChannel = authorMember.voiceChannel;
@@ -61,10 +65,12 @@ exports.run = (client, message, args) => {
                 } catch (e) {
                     console.error(e);
                     connection.disconnect();
+                    busy = false;
                 }
             }).catch(err => {
             console.log(err);
             toVoiceChannel.leave()
+            busy = false;
         });
     }
 };
