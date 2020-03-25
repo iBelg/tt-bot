@@ -40,7 +40,8 @@ exports.run = (client, message, args) => {
         message.channel.send(result);
         return;
     } else if (soundname === 'stop') {
-        toVoiceChannel.leave().then(() => busy = false);
+        toVoiceChannel.leave();
+        busy = false;
         return;
     }
 
