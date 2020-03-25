@@ -16,6 +16,6 @@ exports.process = (client, data) => {
 
 
 function findMessage(client, channelId, messageId) {
-    const channel = client.channels.get(channelId);
-    return channel.fetchMessage(messageId);
+    const channel = client.channels.cache.get(channelId);
+    return channel.messages.fetch(messageId);
 }

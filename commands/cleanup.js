@@ -6,7 +6,7 @@ exports.usage = (client) => {
 
 exports.run = (client, message, args) => {
     const currentGuild = message.guild;
-    const channels = currentGuild.channels.array();
+    const channels = currentGuild.channels.cache.array();
     const serverChangesChannelName = client.config.serverChangesChannel;
     const foundChannels = channels
         .filter((channel) => channel.name === serverChangesChannelName)

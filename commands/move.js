@@ -10,15 +10,15 @@ exports.run = (client, message) => {
     const mentionedUsers = message.mentions.users;
     const authorUser = message.author;
     const authorMember = message.guild.member(authorUser);
-    const toVoiceChannel = authorMember.voiceChannel;
+    const toVoiceChannel = authorMember.voice.channel;
     if (mentionedUsers && mentionedUsers.size > 0) {
         mentionedUsers.forEach((user) => {
             const member = message.guild.member(user);
             if (member) {
-                if (!member.voiceChannel) {
+                if (!member.voice.channel) {
                     message.channel.send(`${member.user.username} is not connected to voice.`)
-                } else if (member.voiceChannel !== toVoiceChannel) {
-                    member.setVoiceChannel(toVoiceChannel);
+                } else if (member.voice.channel !== toVoiceChannel) {
+                    member.voice.setChannel(toVoiceChannel);
                 }
             }
         });

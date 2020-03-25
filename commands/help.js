@@ -1,4 +1,4 @@
-const { RichEmbed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 exports.usage = (client) => {
     return `
@@ -8,7 +8,7 @@ exports.usage = (client) => {
 };
 
 exports.run = (client, message, args) => {
-    let embed = new RichEmbed();
+    let embed = new MessageEmbed();
     if (args.length >= 1) {
         let commandName = args[0];
         let foundCommand = client.commands.get(commandName);

@@ -12,4 +12,5 @@ module.exports = (client, message) => {
   
   if (!cmd) return;
   cmd.run(client, message, args);
+  message.delete({reason: 'Keep channel clean.'});
 };

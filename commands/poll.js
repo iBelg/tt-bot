@@ -19,11 +19,11 @@ exports.setup = (client) => {
         if (embed) {
             if (titleRegex.test(embed.title) && data.emoji.name && data.emoji.name === utils.informationIcon()) {
                 (async () => {
-                    const reactionTallyEmbed = new Discord.RichEmbed()
+                    const reactionTallyEmbed = new Discord.MessageEmbed()
                         .setTitle(`A tally of all the reactions (requested by ${data.member.user.username})`)
                         .setColor(0xFF0000)
                         .setDescription(embed.description)
-                        .addBlankField();
+                        .addField('\u200b', '\u200b');
                     const voteableReactions = utils.getAllReactionsFromMessageByMe(data.message);
 
                     for (const reaction of voteableReactions) {
@@ -31,7 +31,7 @@ exports.setup = (client) => {
                             continue;
                         }
                         let userString = '';
-                        let userCollection = await reaction.fetchUsers();
+                        let userCollection = await reaction.users.fetch();
                         userCollection.array().filter((user) => user.id !== client.user.id).forEach((user, index, array) => {
                             userString += `${user.username}${index === array.length - 1 ? '' : ', '}`;
                         });
@@ -70,7 +70,7 @@ exports.run = (client, message, args) => {
         }
     }
 
-    const embed = new Discord.RichEmbed()
+    const embed = new Discord.MessageEmbed()
         .setTitle(`${message.author.username} created a poll!`)
         .setColor(0xC30EA9)
         .setDescription(`${description}\n

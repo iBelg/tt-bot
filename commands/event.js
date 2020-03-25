@@ -19,7 +19,7 @@ exports.setup = (client) => {
         if (embed) {
             if (titleRegex.test(embed.title) && data.emoji.name && data.emoji.name === utils.informationIcon()) {
                 (async () => {
-                    const reactionTallyEmbed = new Discord.RichEmbed()
+                    const reactionTallyEmbed = new Discord.MessageEmbed()
                         .setTitle(`A tally of all the reactions (requested by ${data.member.user.username})`)
                         .setColor(0xFF0000)
                         .setDescription(embed.description);
@@ -30,11 +30,11 @@ exports.setup = (client) => {
                             continue;
                         }
                         let userString = '';
-                        let userCollection = await reaction.fetchUsers();
+                        let userCollection = await reaction.users.fetch();
                         userCollection.array().filter((user) => user.id !== client.user.id).forEach((user, index, array) => {
                             userString += `${user.username}${index === array.length - 1 ? '' : ', '}`;
                         });
-                        reactionTallyEmbed.addField(`${reaction.emoji.name} (${reaction.users.size})`, userString || '\u200b');
+                        reactionTallyEmbed.addField(`${reaction.emoji.name} (${reaction.users.cache.size - 1})`, userString || '\u200b');
                     }
 
                     channel.send(reactionTallyEmbed);
@@ -45,7 +45,7 @@ exports.setup = (client) => {
 };
 
 exports.run = (client, message, args) => {
-    const embed = new Discord.RichEmbed()
+    const embed = new Discord.MessageEmbed()
         .setTitle(`${message.author.username} created an event!`)
         .setColor(0xFF0000)
         .setDescription(args.join(' '));

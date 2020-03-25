@@ -31,7 +31,7 @@ exports.run = (client, message, args) => {
 
     const authorUser = message.author;
     const authorMember = message.guild.member(authorUser);
-    const toVoiceChannel = authorMember.voiceChannel;
+    const toVoiceChannel = authorMember.voice.channel;
     const soundname = args[0];
 
     if (soundname === 'list') {
@@ -65,8 +65,8 @@ exports.run = (client, message, args) => {
                 }, 1000 * 60 * 15);
                 try {
                     const path = `./sounds/${filename}`;
-                    const dispatcher = connection.playFile(path);
-                    dispatcher.on('end', () => {
+                    const dispatcher = connection.play(path);
+                    dispatcher.on('finish', () => {
                         finish(connection);
                     });
                 } catch (e) {
@@ -79,19 +79,19 @@ exports.run = (client, message, args) => {
             toVoiceChannel.leave();
             busy = false;
         });
+    } else {
+        message.channel.send(`${soundname} is not a valid sound name`);
+        busy = false;
     }
 };
 
 
 function finish(connection) {
-    const tempTimeout = setTimeout(() => {
-        if (connection.status !== 4) {
-            connection.disconnect();
-        }
-        clearTimeout(currentTimeout);
-        currentTimeout = undefined;
-        busy = false;
-        clearTimeout(tempTimeout);
-    }, 2000);
+    if (connection.status !== 4) {
+        connection.disconnect();
+    }
+    clearTimeout(currentTimeout);
+    currentTimeout = undefined;
+    busy = false;
 }
 

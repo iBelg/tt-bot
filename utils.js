@@ -21,12 +21,12 @@ module.exports = {
         return 'ℹ️';
     },
     getAllReactionsFromMessageByMe: (message) => {
-        const reactions = message.reactions.array();
+        const reactions = message.reactions.cache.array();
         return reactions.filter((reaction) => reaction.me);
     },
     getServerChangesChannel: (guild, client) => {
         const cache = client.cache.getCache(guild);
-        const channels = guild.channels.array();
+        const channels = guild.channels.cache.array();
         const serverChangesChannelName = client.config.serverChangesChannel;
         if (!cache.getItem('serverChangesChannel')) {
             const serverChangesChannel = channels.find((channel) => channel.name === serverChangesChannelName);

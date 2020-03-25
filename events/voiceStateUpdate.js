@@ -1,11 +1,11 @@
 const utils = require('../utils.js');
 
-module.exports = (client, oldUser, newUser) => {
-  const userGuild = newUser.guild;
+module.exports = (client, oldState, newState) => {
+  const userGuild = newState.guild;
   const serverChangesChannel = getServerChangesChannel(userGuild, client);
-  const oldChannelName = oldUser.voiceChannel ? oldUser.voiceChannel.name : undefined;
-  const newChannelName = newUser.voiceChannel ? newUser.voiceChannel.name : undefined;
-  const username = newUser.user.username;
+  const oldChannelName = oldState.channel ? oldState.channel.name : undefined;
+  const newChannelName = newState.channel ? newState.channel.name : undefined;
+  const username = newState.member.displayName;
   
   Promise.resolve(serverChangesChannel).then((scChannel) => {
     if (oldChannelName !== newChannelName) {
@@ -27,7 +27,7 @@ function getServerChangesChannel(guild, client) {
 function createServerChangesChannel(guild, client) {
   const serverChangesChannelName = client.config.serverChangesChannel;
   const defaultRoleId = guild.id; // guild id counts as default role id
-  return guild.createChannel(serverChangesChannelName, { type: 'text', permissionOverwrites: [
+  return guild.channels.create(serverChangesChannelName, { type: 'text', permissionOverwrites: [
     {
       id: defaultRoleId,
       deny: ['SEND_MESSAGES', 'SEND_TTS_MESSAGES', 'MANAGE_MESSAGES', 'ATTACH_FILES', 'MENTION_EVERYONE'],
