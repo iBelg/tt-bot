@@ -56,8 +56,15 @@ exports.run = (client, message, args) => {
                 }, 15000);
                 try {
                     const path = `./sounds/${filename}`;
+                    if (fs.existsSync(path)) {
+                        console.log('File has been found!');
+                    } else {
+                        console.log('File has not been found!!!');
+                    }
+                    console.log('Playing file!');
                     const dispatcher = connection.playFile(path);
                     dispatcher.on('end', () => {
+                        console.log('Playing file ended!');
                         connection.disconnect();
                         clearTimeout(currentTimeout);
                     });
