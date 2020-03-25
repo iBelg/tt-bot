@@ -1,6 +1,7 @@
 const utils = require('../utils.js');
 
 module.exports = (client, oldState, newState) => {
+  if (newState.member.user.bot) return;
   const userGuild = newState.guild;
   const serverChangesChannel = getServerChangesChannel(userGuild, client);
   const oldChannelName = oldState.channel ? oldState.channel.name : undefined;
