@@ -24,8 +24,10 @@ exports.setup = (client) => {
 exports.usage = (client) => {
     return `
     Play a sound in your current voice channel.
-    ${client.config.prefix}play <sound name> - play this sound
+    ${client.config.prefix}play <sound name> - play this sound (or add to queue)
     ${client.config.prefix}play list - lists all sound names
+    ${client.config.prefix}play stop - stop/skips the currently playing sound
+    ${client.config.prefix}play terminate - stop the current and all queued sounds
     `;
 };
 
@@ -42,6 +44,10 @@ exports.run = (client, message, args) => {
         message.channel.send(result);
         return;
     } else if (broadcastName === 'stop') {
+        processQueue(client);
+        return;
+    } else if (broadcastName === 'terminate') {
+        queue = [];
         processQueue(client);
         return;
     } else if (soundMappings.has(broadcastName)) {
