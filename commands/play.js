@@ -1,9 +1,7 @@
-const utils = require('../utils.js');
 const fs = require('fs');
 const Enmap = require('enmap');
 
 let soundMappings;
-let currentTimeout;
 let queue = [];
 let processingQueue = false;
 
