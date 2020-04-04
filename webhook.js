@@ -10,7 +10,11 @@ http.createServer((req, res) => {
        let sig = `sha1=${crypto.createHmac('sha1', webhookSecret).update(chunk.toString()).digest('hex')}`;
        if (req.headers['x-hub-signature'] == sig) {
            console.log('Remote repo has been updated, pulling updates and restarting server...');
-           exec(`cd ${pathOfRepo} && git reset --hard HEAD && git pull`);
+           exec(`cd ${pathOfRepo} && git reset --hard HEAD && git pull`, (err, stdout, stderr) => {
+               console.log('Err', err);
+               console.log('stdout', stdout);
+               console.log('stderr', stderr);
+           });
        }
    });
 
