@@ -8,7 +8,7 @@ const port = process.env.OPEN_PORT;
 http.createServer((req, res) => {
    req.on('data', (chunk) => {
        let sig = `sha1=${crypto.createHmac('sha1', webhookSecret).update(chunk.toString()).digest('hex')}`;
-       if (req.headers['x-hub-signature'] === sig) {
+       if (req.headers['x-hub-signature'] == sig) {
            console.log('Remote repo has been updated, pulling updates and restarting server...');
            exec(`cd ${pathOfRepo} && git reset --hard HEAD && git pull`);
        }
