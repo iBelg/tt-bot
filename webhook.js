@@ -10,6 +10,7 @@ http.createServer((req, res) => {
    req.on('data', (chunk) => {
        console.log('Headers: ', req.headers['x-hub-signature']);
        let sig = `sha1${crypto.createHmac('sha1', webhookSecret).update(chunk.toString()).digest('hex')}`;
+       console.log('My sig =', sig);
        if (req.headers['x-hub-signature'] == sig) {
            console.log('Hi , I will try and restart');
            exec(`cd ${pathOfRepo} && git reset --hard HEAD && git pull`);
