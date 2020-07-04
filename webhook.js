@@ -15,6 +15,8 @@ http.createServer((req, res) => {
                console.log('stdout', stdout);
                console.log('stderr', stderr);
            });
+       } else {
+          console.log(JSON.stringify(req));
        }
    });
 
