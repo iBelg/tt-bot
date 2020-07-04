@@ -3,7 +3,7 @@ const crypto = require('crypto');
 const exec = require('child_process').exec;
 const webhookSecret = process.env.WEBHOOK_SECRET;
 const pathOfRepo = process.env.REPO_PATH;
-const port = 3000; // process.env.OPEN_PORT;
+const port = process.env.OPEN_PORT;
 const bot = require('./bot');
 const utils = require('./utils');
 
@@ -23,7 +23,7 @@ http.createServer((req, res) => {
    });
 
    res.end();
-}).listen(port, '127.0.0.1');
+}).listen(port);
 
 function messageReceived(message) {
     const req = JSON.parse(message);
