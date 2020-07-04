@@ -3,11 +3,13 @@ const crypto = require('crypto');
 const exec = require('child_process').exec;
 const webhookSecret = process.env.WEBHOOK_SECRET;
 const pathOfRepo = process.env.REPO_PATH;
-const port = process.env.OPEN_PORT;
+const port = 3000; // process.env.OPEN_PORT;
+const bot = require('./bot');
+const utils = require('./utils');
 
 http.createServer((req, res) => {
    req.on('data', (chunk) => {
-       let sig = `sha1=${crypto.createHmac('sha1', webhookSecret).update(chunk.toString()).digest('hex')}`;
+       let sig = `sha1=${crypto.createHmac('sha1', webhookSecret ? webhookSecret : '').update(chunk.toString()).digest('hex')}`;
        if (req.headers['x-hub-signature'] == sig) {
            console.log('Remote repo has been updated, pulling updates and restarting server...');
            exec(`cd ${pathOfRepo} && git reset --hard HEAD && git pull`, (err, stdout, stderr) => {
@@ -15,8 +17,18 @@ http.createServer((req, res) => {
                console.log('stdout', stdout);
                console.log('stderr', stderr);
            });
+       } else {
+           messageReceived(chunk.toString());
        }
    });
 
    res.end();
-}).listen(port);
+}).listen(port, '127.0.0.1');
+
+function messageReceived(message) {
+    const req = JSON.parse(message);
+    console.log(req);
+    const args = req.play.split(/ +/g);
+    const user = utils.findUserInGuild(req.guild_id, req.user_id, bot);
+    bot.commands.get('play').webhookPlay(args, user, bot);
+}

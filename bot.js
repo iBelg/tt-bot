@@ -1,7 +1,6 @@
-const utils = require('./utils.js');
 const events = require('events');
 
-module.exports = () => {
+module.exports = (() => {
     const Discord = require('discord.js');
     const Enmap = require('enmap');
     const fs = require('fs');
@@ -61,5 +60,6 @@ module.exports = () => {
     client.login(client.config.token).then((result) => {
         console.log('Bot has logged in.');
     });
-};
+    return client;
+})();
 

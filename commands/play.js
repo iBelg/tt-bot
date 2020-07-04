@@ -34,25 +34,25 @@ exports.run = (client, message, args) => {
     const authorUser = message.author;
     const authorMember = message.guild.member(authorUser);
     const toVoiceChannel = authorMember.voice.channel;
-    const broadcastName = args[0];
+    const firstArg = args[0];
 
-    if (broadcastName === 'list') {
+    if (firstArg === 'list') {
         let result = '';
         soundMappings.keyArray().forEach(item => result += `${item}, `);
         message.channel.send(result);
         return;
-    } else if (broadcastName === 'stop') {
+    } else if (firstArg === 'stop') {
         processQueue(client);
         return;
-    } else if (broadcastName === 'terminate') {
+    } else if (firstArg === 'terminate') {
         queue = [];
         processQueue(client);
         return;
-    } else if (soundMappings.has(broadcastName)) {
-        let path = soundMappings.get(broadcastName);
+    } else if (soundMappings.has(firstArg)) {
+        let path = soundMappings.get(firstArg);
         queue.push({toVoiceChannel, path});
     } else {
-        message.channel.send(`'${broadcastName}' is not a valid argument.`)
+        message.channel.send(`'${firstArg}' is not a valid argument.`);
         return;
     }
 
@@ -77,3 +77,27 @@ function processQueue(client) {
     }
 }
 
+exports.webhookPlay = (args, user, client) => {
+    const firstArg = args[0];
+    const toVoiceChannel = user.voice.channel;
+    if (firstArg === 'stop') {
+        processQueue(client);
+        return;
+    } else if (firstArg === 'terminate') {
+        queue = [];
+        processQueue(client);
+        return;
+    } else {
+        args.forEach((arg) => {
+            if (soundMappings.has(arg)) {
+                let path = soundMappings.get(arg);
+                queue.push({toVoiceChannel, path});
+            }
+        });
+    }
+
+    if (!processingQueue) {
+        processingQueue = true;
+        processQueue(client);
+    }
+}

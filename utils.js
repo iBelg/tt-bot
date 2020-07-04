@@ -35,5 +35,17 @@ module.exports = {
             }
         }
         return cache.getItem('serverChangesChannel');
+    },
+    findUserInGuild: (guildId, userId, client) => {
+        const guild = client.guilds.cache.get(guildId);
+        if (guild) {
+            const member = guild.members.cache.get(userId);
+            if (member) {
+                return member;
+            }
+            throw new Error(`User with id "${userId}" does not exist (in guild with id "${guildId}")`);
+        } else {
+            throw new Error(`Guild with id "${guildId}" does not exist`);
+        }
     }
 };
