@@ -27,8 +27,8 @@ http.createServer((req, res) => {
 
 function messageReceived(message) {
     const req = JSON.parse(message);
-    const playRequest = message.content;
-    console.log(req);
+    const playRequest = req.content;
+    console.log(req, playRequest);
     const args = playRequest.play.split(/ +/g);
     const user = utils.findUserInGuild(req.guild_id, req.user_id, bot);
     bot.commands.get('play').webhookPlay(args, user, bot);
