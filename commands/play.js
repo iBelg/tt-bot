@@ -48,12 +48,15 @@ exports.run = (client, message, args) => {
         queue = [];
         processQueue(client);
         return;
-    } else if (soundMappings.has(firstArg)) {
-        let path = soundMappings.get(firstArg);
-        queue.push({toVoiceChannel, path});
     } else {
-        message.channel.send(`'${firstArg}' is not a valid argument.`);
-        return;
+        args.forEach((arg) => {
+            if (soundMappings.has(arg)) {
+                let path = soundMappings.get(arg);
+                queue.push({toVoiceChannel, path});
+            } else {
+                message.channel.send(`'${arg}' is not a valid argument.`);
+            }
+        });
     }
 
     if (!processingQueue) {
