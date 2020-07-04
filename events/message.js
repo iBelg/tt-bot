@@ -1,6 +1,6 @@
 module.exports = (client, message) => {
   // we do not care about other bots
-  if (message.author.bot) return;
+  // if (message.author.bot) return;
   
   // Only process messages that start with our prefix
   if (message.content.indexOf(client.config.prefix) !== 0) return;
